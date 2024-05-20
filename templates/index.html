@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Task Master</title>
+{% endblock %}
+
+{% block body %}
+<div class="content">
+<h1 style="text-align: center">Task Master</h1>
+
+<!-- jinja2 syntax here -->
+<!-- what | does is it is a jinja2 filter -->
+{% if tasks|length <1 %}
+<h4 style="text-align: center"> There are no tasks. Create one below! </h4>
+
+{% else %}
+
+  <table>
+    <tr>
+      <th>Task</th>
+      <th>Added</th>
+      <th>Actions</th>
+    </tr>
+    <!-- some jinga2 here -->
+    {% for task in tasks %}
+    <tr>
+        <td>{{ task.content }}</td>
+        <td>{{ task.date_created.date() }}</td>
+        <td>
+          <!-- So now we call the delete function from app.py -->
+          <!-- What we do is pass in the task.id variable-->
+          <!-- This is because there were numerous variables we set up in the -->
+          <!-- class Todo so we now can use those variables -->
+          <a href="/delete/{{task.id}}">Delete</a>
+          <br>
+          <a href="/update/{{task.id}}">Update</a>
+        </td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% endif %}
+  <!-- So now, since we ended the if statement below, we will see be able to see the -->
+  <!-- submit POST action with input type being text and the id being the content -->
+  <!-- the content is the id class name -->
+  <div class="form">
+    <form action="/" method="POST">
+      <input type="text" name="content" id="content">
+      <input type="submit" value="Add Task">
+    </form>
+  </div>
+</div>
+{% endblock %}
